@@ -35,7 +35,7 @@ const medicoSchema = new mongoose.Schema({
     required: [true, "Apellido is required"],
   },
   especialidad:{
-    type: String,
+    type: [String],
     required: [true, "Especialidad is required"],
   }
 },
