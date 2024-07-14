@@ -1,5 +1,6 @@
+// ToastProvider.tsx
 import React, { createContext, useContext, useCallback, ReactNode } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface ToastContextType {
@@ -11,36 +12,40 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export const useToast = () => {
   const context = useContext(ToastContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useToast must be used within a ToastProvider');
   }
   return context;
 };
 
-const ToastProvider = ({ children }: { children: ReactNode }) => {
+interface ToastProviderProps {
+  children: ReactNode;
+}
+
+const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   const notifySuccess = useCallback((message: string) => {
     toast.success(message, {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: 'light',
     });
   }, []);
 
   const notifyError = useCallback((message: string) => {
     toast.error(message, {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: 'light',
     });
   }, []);
 

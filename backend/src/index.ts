@@ -1,24 +1,40 @@
-import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import medicoRoutes from "./routes/medicoRoutes";
-import authRoutes from "./routes/authRoutes";
-const app = express();
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
+import userRoutes from './router/userRoutes'
+import authRoutes from './router/authRoutes'
+
+
 dotenv.config();
+const app = express();
+const port = process.env.PORT || 3000;
 
 //middlewares
 app.use(express.json());
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials: true,
+}));
+app.use(cookieParser());
 
-//Routes
 
-app.use('/api/medicos', medicoRoutes); //TODO
-app.use('/api/auth',authRoutes)
+//routes
+
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
 
 
-//DB connection
-mongoose.connect(process.env.MONGODB_URI as string).then(() => {
-  console.log("Connected to MongoDB");
-  app.listen(3000, () => {
-    console.log("Working on port: ", 3000);
-  });
-});
+
+
+
+//Connection
+
+mongoose.connect(process.env.MONGODB_URI as string).then(()=>{
+    console.log("Connected to MongoDB");
+    app.listen(port,()=>{
+        console.log("Connected to port: ",port);
+    })
+})
+
