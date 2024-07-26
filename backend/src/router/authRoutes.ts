@@ -1,6 +1,6 @@
 import express,{Request,Response} from "express";
 import { check } from "express-validator";
-import { signUp } from "../controller/authControllers";
+import { signOut, signUp } from "../controller/authControllers";
 import { verifyToken } from "../middleware/verifyJWT";
 
 const router = express.Router();
@@ -12,8 +12,13 @@ router.post("/login", [
   }), signUp
 ]);
 
+router.post('/logout', signOut);
+
+
 router.get("/check-user", verifyToken, async (req: Request, res: Response) => {
     res.status(200).json({ userInfo: req.userInfo });
   });
+
+
 
 export default router;

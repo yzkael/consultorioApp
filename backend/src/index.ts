@@ -3,8 +3,10 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import userRoutes from './router/userRoutes'
-import authRoutes from './router/authRoutes'
+import userRoutes from './router/userRoutes';
+import authRoutes from './router/authRoutes';
+
+
 
 
 dotenv.config();
@@ -14,7 +16,7 @@ const port = process.env.PORT || 3000;
 //middlewares
 app.use(express.json());
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin: true,
     credentials: true,
 }));
 app.use(cookieParser());

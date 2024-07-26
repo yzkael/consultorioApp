@@ -1,18 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-declare global {
-    namespace Express {
-      interface Request {
-        userInfo: {
-          userId: string;
-          userRoles: string[];
-        }
-      }
-    }
-  }
-
-
 
 export const verifyToken = async(req: Request, res: Response, next: NextFunction)=>{
     const token = req.cookies["auth_cookie"];

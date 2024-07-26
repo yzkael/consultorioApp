@@ -22,6 +22,7 @@ export const signUp = async (req: Request, res: Response) => {
     const token = jwt.sign(
       {
         userInfo: {
+          username: user.username,
           userId: user._id,
           userRoles: user.roles,
         },
@@ -36,9 +37,24 @@ export const signUp = async (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       maxAge: 24 * 60 * 60 * 1000,
     });
-    res.status(200).json({userInfo: {userId: user._id, userRoles: user.roles }})
+    res
+      .status(200)
+      .json({ userInfo: { userId: user._id, userRoles: user.roles } });
   } catch (error) {
     console.log(error);
-    res.status(500).json({message: "Internal Error 500"});
+    res.status(500).json({ message: "Internal Error 500" });
   }
 };
+
+export const signOut = async (req: Request, res: Response) => {
+  try {
+    res.cookie("auth_cookie", "", {
+      expires: new Date(0),
+    });
+    res.status(200).json({ message: "Signed Out Succesfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Error 500" });
+  }
+};
+
+

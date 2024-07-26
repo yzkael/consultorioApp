@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import * as apiClient from "../api-client";
 import { useToast } from "../context/ToastContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/RoleContext";
 
 export interface UserFormData {
   username: string;
@@ -10,7 +11,7 @@ export interface UserFormData {
 }
 
 const Login = () => {
-  const queryClient = useQueryClient();
+ 
   const navigate = useNavigate();
   const { notifyError, notifySuccess } = useToast();  
   const {
@@ -19,10 +20,14 @@ const Login = () => {
     formState: { errors },
   } = useForm<UserFormData>();
 
+  const {isLoggedIn} = useAuth();
+  if (isLoggedIn) {
+    navigate('/dashboard')
+  }
+
   const { mutate, isLoading } = useMutation(apiClient.signUp, {
     onSuccess: async () => {
       notifySuccess("Login Succesfully!");
-      queryClient.invalidateQueries('validateRole');
       navigate("/dashboard");
     },
     onError: async (error: Error) => {
